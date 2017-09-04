@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="./css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="./css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="./css/laydates.css?v=4.1.0" rel="stylesheet">
+    <link href="./css/laydate.css?v=4.1.0" rel="stylesheet">
+
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="./css/laypage.css" rel="stylesheet">
+    <title>数据云</title>
+</head>
+<style>
+    .DBbody{
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        background: #fff;
+        padding: 20px;
+    }
+    .input-group{
+        display: inline-block;
+        float: left;
+    }
+    .input-group .form-control, .input-group-addon, .input-group-btn{
+        display: inline-block;
+        font-size: 12px;
+    }
+    .input-label{
+        display:inline-block;
+        width:80px;
+        line-height:30px;
+        padding:0;
+        float: left;
+        text-align: right;
+        padding-right: 10px;
+    }
+    .input-seek{
+        width: 6%;
+        padding-left: 3%;
+    }
+    .add-in-time{
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display:none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+    .addInTime{
+        width: 0;
+        height: 0;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin:0;
+        background: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .timeTop{
+        width: 100%;
+        height: 0;
+        border-bottom: 1px solid #ddd;
+        padding: 0 15px;
+        text-align: left;
+        line-height: 0;
+    }
+    .timeMiddle{
+        width: 100%;
+        height:0;
+        text-align: center;
+        line-height: 0;
+    }
+    .timeBottom{
+        width: 100%;
+        height: 0;
+        border-top: 1px solid #ddd;
+        background: #f1f1f1;
+        padding-top: 8px;
+    }
+    .col-sm-5 .form-control{
+        width: 45%;
+    }
+    .zhi{
+        display: block;width: 10%;
+        height: 100%;
+        float: left;
+        text-align: center;
+        line-height: 30px;
+    }
+    .control-label{
+        line-height: 30px;
+        padding: 0;
+        text-align: right;
+        float: left;
+    }
+    .iframes,.iframes iframe{
+        width: 100%;
+        height: 100%;
+        border:none;
+        margin: 0;
+        padding: 0;
+    }
+    .progressTime{
+        display: block;
+        width: 100%;
+        height: 8px;
+    }
+    .progressTime span{
+        display: block;
+        height: 100%;
+        background: #1ab394;
+        position: relative;
+    }
+    .progressTime span small{
+        display:block;
+        width: auto;
+        height: 100%;
+        line-height: 8px;
+        position: absolute;
+        top: 0;
+        right: -70px;
+        font-size: 10px;
+    }
+</style>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content text-left p-xs"><h4>新数据操作性能体验</h4></div>
+            </div>
+        </div>
+    </div>
+    <div class="DBbody">
+        <ul id="ESTab" class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">实时统计</a></li>
+            <li><a href="#tab2" data-toggle="tab">业务查询</a></li>
+            <li><a href="#tab3" data-toggle="tab">业务操作</a></li>
+        </ul>
+        <div id="ESTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="tab1">
+                <div class="row">
+                    <div class="col-sm-12 tabBtnP" style="margin:20px 0;">
+                        <div class="input-group col-sm-5" style="float:left;">
+                            <label class="control-label" style="width:auto;">有效时间</label>
+                            <div class="col-sm-10">
+                                <input placeholder="开始日期" class="form-control layer-date" id="start1"><span class="zhi">至</span>
+                                <input placeholder="结束日期" class="form-control layer-date" id="end1">
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-2" style="float:left;">
+                            <label class="input-label">网点编码:</label>
+                            <input type="text" placeholder="请输入网点编码" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="input-group col-sm-2" style="float:left;">
+                            <label class="input-label">手机号:</label>
+                            <input type="text" placeholder="请输入手机号" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="input-seek col-sm-1" style="float:left;"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="tabBtn1"> 搜索</button> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="iframes">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab1-table"></tbody>
+                    </table>
+                </div>
+                 <div class="body-bottom row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-10" style="margin-top: 13px">
+                            <span class="progressTime">
+                                <span style="width:0"><small></small></span>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-primary contrast" style="width:80px;float:right;" id="contrast1">查询过程</button>
+                    </div>
+                </div>
+                <div class="table-responsive" id="test1" style="width: 700px;float: left;"></div>
+            </div>
+            <div class="tab-pane fade" id="tab2">
+                <div class="row">
+                    <div class="col-sm-12 tabBtnP" style="margin:20px 0;">
+                        <div class="input-group col-sm-5" style="float:left;">
+                            <label class="control-label" style="width:auto;">有效时间:</label>
+                            <div class="col-sm-10">
+                                <input placeholder="开始日期" class="form-control layer-date" id="start2"><span class="zhi">至</span>
+                                <input placeholder="结束日期" class="form-control layer-date" id="end2">
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-2" style="float:left;">
+                            <label class="input-label">网点编码:</label>
+                            <input type="text" placeholder="请输入网点编码" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="form-group col-sm-3" style="margin-bottom: 0">
+                            <label class="input-label">金额范围</label>
+                            <div class="col-sm-3" style="height:30px;padding: 0;margin-right: 10px">
+                                <input type="text" placeholder="MIN" class="input-sm form-control minM">
+                            </div>
+                            <div class="col-sm-3" style="height:30px;padding: 0;">
+                                <input type="text" placeholder="MAX" class="input-sm form-control maxM">
+                            </div>
+                        </div>
+                        <div class="input-seek col-sm-1" style="float:left;"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="tabBtn2"> 搜索</button> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="iframes">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>运单号</th>
+                                <th>运单金额</th>
+                                <th>修改时间</th>
+                                <th>目标网点</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab2-table"></tbody>
+                    </table>
+                </div>
+                 <div class="body-bottom row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-10" style="margin-top: 13px">
+                            <span class="progressTime">
+                                <span style="width:0"><small></small></span>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-primary contrast" style="width:80px;float:right;"  id="contrast2">查询过程</button>
+                    </div>
+                </div>
+                <div class="table-responsive" id="test2" style="width: 700px;float: left;"></div>
+                <div hidden id="ESProcess"></div>
+            </div>
+            <div class="tab-pane fade" id="tab3">
+                <div class="row">
+                    <div class="col-sm-12 tabBtnP" style="margin:20px 0;">
+                        <div class="input-group col-sm-5" style="float:left;">
+                            <label class="control-label" style="width:auto;">有效时间:</label>
+                            <div class="col-sm-10">
+                                <input placeholder="开始日期" class="form-control layer-date" id="start3"><span class="zhi">至</span>
+                                <input placeholder="结束日期" class="form-control layer-date" id="end3">
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-3" style="float:left;">
+                            <label class="input-label">网点编码:</label>
+                            <input type="text" placeholder="请输入网点编码" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="input-seek col-sm-2" style="float:left;"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="tabBtn3"> 搜索</button> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="iframes">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab3-table"></tbody>
+                    </table>
+                </div>
+                 <div class="body-bottom row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-10" style="margin-top: 13px">
+                            <span class="progressTime">
+                                <span style="width:0"><small></small></span>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-primary contrast" style="width:80px;float:right;" id="contrast3">查询过程</button>
+                    </div>
+                </div>
+                <div class="table-responsive" id="test3" style="width: 700px;float: left;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content text-left p-xs"><h4>原有MySQL操作性能对比</h4></div>
+            </div>
+        </div>
+    </div>
+    <div class="DBbody">
+        <ul id="SQLTab" class="nav nav-tabs">
+            <li class="active"><a href="#tab11" data-toggle="tab">实时统计</a></li>
+            <li><a href="#tab22" data-toggle="tab">业务查询</a></li>
+            <li><a href="#tab33" data-toggle="tab">业务操作</a></li>
+        </ul>
+        <div id="SQLTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="tab11">
+                <div class="row">
+                    <div class="col-sm-12 tabBtnP" style="margin:20px 0;">
+                        <div class="input-group col-sm-5" style="float:left;">
+                            <label class="control-label" style="width:auto;">有效时间</label>
+                            <div class="col-sm-10">
+                                <input placeholder="开始日期" class="form-control layer-date" id="start11"><span class="zhi">至</span>
+                                <input placeholder="结束日期" class="form-control layer-date" id="end11">
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-2" style="float:left;">
+                            <label class="input-label">网点编码:</label>
+                            <input type="text" placeholder="请输入网点编码" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="input-group col-sm-2" style="float:left;">
+                            <label class="input-label">手机号:</label>
+                            <input type="text" placeholder="请输入手机号" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="input-seek col-sm-1" style="float:left;"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="tabBtn4"> 搜索</button> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="iframes">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab11-table"></tbody>
+                    </table>
+                </div>
+                 <div class="body-bottom row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-10" style="margin-top: 13px">
+                            <span class="progressTime">
+                                <span style="width:0"><small></small></span>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-primary contrast" style="width:80px;float:right;" id="contrast11">查询过程</button>
+                    </div>
+                </div>
+                <div class="table-responsive" id="test4" style="width: 700px;float: left;"></div>
+            </div>
+            <div class="tab-pane fade" id="tab22">
+                <div class="row">
+                    <div class="col-sm-12 tabBtnP" style="margin:20px 0;">
+                        <div class="input-group col-sm-5" style="float:left;">
+                            <label class="control-label" style="width:auto;">有效时间:</label>
+                            <div class="col-sm-10">
+                                <input placeholder="开始日期" class="form-control layer-date" id="start22"><span class="zhi">至</span>
+                                <input placeholder="结束日期" class="form-control layer-date" id="end22">
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-2" style="float:left;">
+                            <label class="input-label">网点编码:</label>
+                            <input type="text" placeholder="请输入网点编码" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="form-group col-sm-3" style="margin-bottom: 0">
+                            <label class="input-label">金额范围</label>
+                            <div class="col-sm-3" style="height:30px;padding: 0;margin-right: 10px">
+                                <input type="text" placeholder="MIN" class="input-sm form-control minM">
+                            </div>
+                            <div class="col-sm-3" style="height:30px;padding: 0;">
+                                <input type="text" placeholder="MAX" class="input-sm form-control maxM">
+                            </div>
+                        </div>
+                        <div class="input-seek col-sm-1" style="float:left;"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="tabBtn5"> 搜索</button> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="iframes">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>运单号</th>
+                                <th>运单金额</th>
+                                <th>修改时间</th>
+                                <th>目标网点</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab22-table"></tbody>
+                    </table>
+                </div>
+                 <div class="body-bottom row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-10" style="margin-top: 13px">
+                            <span class="progressTime">
+                                <span style="width:0;"><small></small></span>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-primary contrast" style="width:80px;float:right;"  id="contrast22">查询过程</button>
+                    </div>
+                </div>
+                <div class="table-responsive" id="test5" style="width: 700px;float: left;"></div>
+            </div>
+            <div class="tab-pane fade" id="tab33">
+                <div class="row">
+                    <div class="col-sm-12 tabBtnP" style="margin:20px 0;">
+                        <div class="input-group col-sm-5" style="float:left;">
+                            <label class="control-label" style="width:auto;">有效时间:</label>
+                            <div class="col-sm-10">
+                                <input placeholder="开始日期" class="form-control layer-date" id="start33"><span class="zhi">至</span>
+                                <input placeholder="结束日期" class="form-control layer-date" id="end33">
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-3" style="float:left;">
+                            <label class="input-label">网点编码:</label>
+                            <input type="text" placeholder="请输入网点编码" class="input-sm form-control" style="width:calc(100% - 80px)">
+                        </div>
+                        <div class="input-seek col-sm-2" style="float:left;"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="tabBtn6"> 搜索</button> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="iframes">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab33-table"></tbody>
+                    </table>
+                </div>
+                 <div class="body-bottom row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-10" style="margin-top: 13px">
+                            <span class="progressTime">
+                                <span style="width:0"><small></small></span>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-primary contrast" style="width:80px;float:right;" id="contrast33">查询过程</button>
+                    </div>
+                </div>
+                <div class="table-responsive" id="test6" style="width: 700px;float: left;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./js/jquery.min.js?v=2.1.4"></script>
+<script src="./js/bootstrap.min.js?v=3.3.6"></script>
+<script src="./js/laydate.js"></script>
+<script src="./js/lib/layer/layer.js"></script>
+<script src="./js/icheck.min.js?v=1.0.0"></script>
+<script type="text/javascript" src="./js/contabs.min.js"></script>
+<script src="./js/icheck.min.js?v=1.0.0"></script>
+<script src="./js/laypage.js?v=1.0.0"></script>
+<script type="text/javascript" src="./js/jsFreeMarker.js"></script>
+<script type="text/javascript">
+    //日历
+    function DaTes(el){
+        var start={
+            elem:el,
+            format:"YYYY-MM-DD hh:mm:ss",
+            min:"1970-01-01 00:00:00",
+            max:laydate.now(),
+            istime:true,
+            istoday:false,
+            choose:function(datas){
+                end.min=datas;
+                end.start=datas;
+            }
+        };
+        laydate(start);
+    }
+    DaTes("#start1");
+    DaTes("#start2");
+    DaTes("#start3");
+    DaTes("#start11");
+    DaTes("#start22");
+    DaTes("#start33");
+    function DaTee(el){
+        var end={
+            elem:el,
+            format:"YYYY-MM-DD hh:mm:ss",
+            min:"1970-01-01 00:00:00",
+            max:laydate.now(),
+            istime:true,
+            istoday:false,
+            choose:function(datas){
+                start.max=datas;
+            }
+        };
+        laydate(end);
+    }
+    DaTee("#end1");
+    DaTee("#end2");
+    DaTee("#end3");
+    DaTee("#end11");
+    DaTee("#end22");
+    DaTee("#end33");
+
+
+
+    //实时统计
+        //ES
+    $("#tabBtn1").click(function(){
+        var startD=$(this).parents(".tabBtnP").find("#start1").val();
+        var endD=$(this).parents(".tabBtnP").find("#end1").val();
+//        renewAjaxTab('http://data.pamirs.top:8085/calculator/power/es',startD,endD,"#tab1-table");
+    });
+        //SQL
+    $("#tabBtn4").click(function(){
+        var startD=$(this).parents(".tabBtnP").find("#start11").val();
+        var endD=$(this).parents(".tabBtnP").find("#end11").val();
+//        renewAjaxTab('http://data.pamirs.top:8085/calculator/power/es',startD,endD,"#tab11-table");
+    });
+    //业务查询
+        //ES
+    $("#tabBtn2").click(function(){
+        var startD=$(this).parents(".tabBtnP").find("#start2").val();
+        var endD=$(this).parents(".tabBtnP").find("#end2").val();
+        var minM=$(this).parents(".tabBtnP").find(".minM").val();
+        var maxM=$(this).parents(".tabBtnP").find(".maxM").val();
+        AjaxInquiryTab('http://data.pamirs.top:8080/calc/power/es',minM,maxM,startD,endD,"#tab2-table");
+    });
+        //SQL
+    $("#tabBtn5").click(function(){
+        var startD=$(this).parents(".tabBtnP").find("#start22").val();
+        var endD=$(this).parents(".tabBtnP").find("#end22").val();
+        var minM=$(this).parents(".tabBtnP").find(".minM").val();
+        var maxM=$(this).parents(".tabBtnP").find(".maxM").val();
+        AjaxInquiryTab('http://data.pamirs.top:8080/calc/power/mysql',minM,maxM,startD,endD,"#tab22-table");
+    });
+    //业务操作
+        //ES
+    $("#tabBtn3").click(function(){
+        var startD=$(this).parents(".tabBtnP").find("#start3").val();
+        var endD=$(this).parents(".tabBtnP").find("#end3").val();
+//        renewAjaxTab('http://data.pamirs.top:8085/calculator/power/es',startD,endD,"#tab3-table");
+    });
+        //SQL
+    $("#tabBtn6").click(function(){
+        var startD=$(this).parents(".tabBtnP").find("#start33").val();
+        var endD=$(this).parents(".tabBtnP").find("#end33").val();
+//        renewAjaxTab('http://data.pamirs.top:8085/calculator/power/es',startD,endD,"#tab33-table");
+    });
+
+    function AjaxInquiryTab(url,minM,maxM,startD,endD,el){
+        var num=10000;
+        if(startD==""){
+            layer.msg("请填写开始时间", {
+                offset: 't',
+                anim: 0
+            });
+            return;
+        }
+        if(endD==""){
+            layer.msg("请填写结束时间", {
+                offset: 't',
+                anim: 0
+            });
+            return;
+        }
+        if(minM==""||maxM==""){
+            layer.msg("请完整填写金额范围", {
+                offset: 't',
+                anim: 0
+            });
+            return;
+        }
+        var BtnJson={
+            'startDate':startD,
+            'endDate':endD,
+            'startAmount':minM,
+            'endAmount':maxM
+        };
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:url,
+            dataType:'json',
+            data:JSON.stringify(BtnJson),
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.result.success){
+                    var time=data.timer;
+                    var w=time/num;
+                    if(w>=1){
+                        $(el).parents(".tab-pane").find(".progressTime span").animate({width:"100%"},1000);
+                    }else{
+                        var newW=w*100+"%";
+                        $(el).parents(".tab-pane").find(".progressTime span").animate({width:newW},1000);
+                    }
+                    if(time>1000){
+                        var tm=time%1000;
+                        var ts=(time-tm)/1000;
+                        $(el).parents(".tab-pane").find(".progressTime small").text(ts + "s"+tm+"ms");
+                    }else{
+                        $(el).parents(".tab-pane").find(".progressTime small").text(time+"ms");
+                    }
+                    $("#ESProcess").text(data.process);
+                    $(el).empty();
+                    for(var i=0;i<data.result.datalist.length;i++){
+                        var datas=data.result.datalist[i];
+                        var tr=
+                                "<tr>" +
+                                    "<td>"+datas.order_no+"</td>" +
+                                    "<td>"+datas.amount+"</td>" +
+                                    "<td>"+formatDate(datas.modifyDate)+"</td>" +
+                                    "<td>"+datas.destOrgComCode+"</td>" +
+                                "</tr>";
+                        $(tr).appendTo(el);
+                    }
+                    var elem=$(el).parents(".tab-pane").find(".table-responsive");
+                    laypage({
+                        cont: $(elem), //容器。值支持id名、原生dom对象，jquery对象,
+                        pages: Math.ceil(data.result.total/20), //总页数
+                        skip: true, //是否开启跳页
+                        skin: '#18a689',
+                        groups: 8,//连续显示分页数
+                        jump: function(e, first) { //触发分页后的回调
+                            if (!first) { //一定要加此判断，否则初始时会无限刷新
+                                var index2 = layer.load(2, {shade: false});
+                                BtnJson.currentPage=e.curr;
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data:JSON.stringify(BtnJson),
+                                    dataType: 'json',
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (data) {
+                                        if (data.result.success) {
+                                            DaTas(el,data);
+                                            function layerLoad(){layer.close(index2);}
+                                            setTimeout(layerLoad,1000);
+                                        } else {
+                                            layer.msg("服务获取失败["+data.result.errorMessage+"]", {
+                                                offset: 't',
+                                                anim: 0
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    var p=$(el).parents(".tab-pane");
+                    $("<small style='width:70px;float:left;line-height:30px;'>共"+data.result.total+"条</small>").appendTo(p);
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }
+            },
+            error:function(data){
+                layer.msg("服务获取失败["+data.result.errorMessage+"]", {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    }
+    function DaTas(el,data){
+        var num=10000;
+        var time=data.timer;
+        var w=time/num;
+        if(w>=1){
+            $(el).parents(".tab-pane").find(".progressTime span").animate({width:"100%"},1000);
+        }else{
+            var newW=w*100+"%";
+            $(el).parents(".tab-pane").find(".progressTime span").animate({width:newW},1000);
+        }
+        if(time>1000){
+            var tm=time%1000;
+            var ts=(time-tm)/1000;
+            $(el).parents(".tab-pane").find(".progressTime small").text(ts + "s"+tm+"ms");
+        }else{
+            $(el).parents(".tab-pane").find(".progressTime small").text(time+"ms");
+        }
+        $("#ESProcess").text(data.process);
+        $(el).empty();
+        for(var j=0;j<data.result.datalist.length;j++){
+            var datas=data.result.datalist[j];
+            var tr=
+                    "<tr>" +
+                    "<td>"+datas.bill_code+"</td>" +
+                    "<td>"+datas.dispatch_site_name+"</td>" +
+                    "<td>"+datas.payer_name+"</td>" +
+                    "<td>"+datas.sign_site_name+"</td>" +
+                    "</tr>";
+            $(tr).appendTo(el);
+        }
+        $(el).parents(".tab-pane").find(".table-responsive");
+    }
+    function formatDate(str){
+                var date = new Date(str),Y,M,D,h,m,s;
+                Y = date.getFullYear() + '-';
+                M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                D = (date.getDate()>=10?date.getDate():"0"+date.getDate()) + ' ';
+                h = (date.getHours()<=0?'00':(date.getHours()>=10?date.getHours():"0"+date.getHours())) + ':';
+                m = (date.getMinutes()<=0?'00':(date.getMinutes()>=10?date.getMinutes():"0"+date.getMinutes())) + ':';
+                s = (date.getSeconds()<=0?'00':(date.getSeconds()>=10?date.getSeconds():"0"+date.getSeconds()));
+                return (Y+M+D+h+m+s);
+            }
+    //分页
+    ;(function(win){
+        laypage({
+            cont: $('#test'), //容器。值支持id名、原生dom对象，jquery对象,
+            pages: 20, //总页数
+            skip: true, //是否开启跳页
+            skin: '#18a689',
+            groups: 8 //连续显示分页数
+        });
+
+    }(window));
+
+
+    var closeContrast=function(){
+        layer.close(contrast);
+    };
+    //弹框SQL对比
+    $(".contrast").click(function (){
+        var id=$(this).attr('id');
+        $(this).parents(".gray-bg").attr("datas-id",id);
+        contrast=layer.open({
+            type: 2,
+            shadeClose: true,
+            title:"查询过程",
+            shade: 0.8,
+            area: ['60%', '72%'],
+            content: './contrast.html' //iframe的url
+        });
+    })
+</script>
+</body>
+</html>

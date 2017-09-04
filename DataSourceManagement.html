@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="./css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="./css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Morris -->
+    <!--<link href="./css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">-->
+
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="./css/laypage.css?v=4.1.0" rel="stylesheet">
+    <title>数据云</title>
+</head>
+<style>
+    .input-group{
+        display: inline-block;
+        float: left;
+    }
+    .input-group .form-control, .input-group-addon, .input-group-btn{
+        display: inline-block;
+        font-size: 12px;
+    }
+    .input-label{
+        display:inline-block;
+        width:80px;
+        line-height:30px;
+        padding:0;
+        float: left;
+        text-align: right;
+        padding-right: 10px;
+    }
+    .input-seek{
+        width: 6%;
+        padding-left: 3%;
+    }
+    .table>thead>tr>th{
+        line-height: 40px;
+    }
+    .table>tbody>tr>td{
+        border-top: 0;
+        border-bottom: 1px solid #ddd;
+    }
+    /*.add-in-time{
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display:none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+    .addInTime{
+        width: 0;
+        height: 0;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin:0;
+        background: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .timeTop{
+        width: 100%;
+        height: 0;
+        border-bottom: 1px solid #ddd;
+        padding: 0 15px;
+        text-align: left;
+        line-height: 0;
+    }
+    .timeMiddle{
+        width: 100%;
+        height:0;
+        text-align: center;
+        line-height: 0;
+    }
+    .timeBottom{
+        width: 100%;
+        height: 0;
+        border-top: 1px solid #ddd;
+        background: #f1f1f1;
+        padding-top: 8px;
+    }*/
+</style>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>全部服务</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link btn" style="background:#18a689;color:#fff;padding:6px;display:inline;" id="addData">
+                            <i class="fa fa-plus"></i>
+                            添加
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group col-sm-2" style="float:left;margin-right:30px">
+                                <label class="input-label">数据源:</label>
+                                <input type="text" placeholder="请输入数据源" class="input-sm form-control" style="width:calc(100% - 80px)">
+                            </div>
+                            <div class="input-group col-sm-2" style="float:left;margin-right:30px">
+                                <label class="input-label">IP地址:</label>
+                                <input type="text" placeholder="请输入IP地址" class="input-sm form-control" style="width:calc(100% - 80px)">
+                            </div>
+                            <div class="input-group col-sm-2" style="float:left;margin-right:30px">
+                                <label class="input-label">数据源类型:</label>
+                                <input type="text" placeholder="请输入数据源类型" class="input-sm form-control" style="width:calc(100% - 80px)">
+                            </div>
+                            <div class="input-group col-sm-2" style="float:left;margin-right:30px">
+                                <label class="input-label">表名:</label>
+                                <input type="text" placeholder="请输入表名" class="input-sm form-control" style="width:calc(100% - 80px)">
+                            </div>
+                            <div class="input-seek col-sm-2" style="float:left;"> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr class="thead">
+                                <th>数据源</th>
+                                <th>IP地址</th>
+                                <th>端口号</th>
+                                <th>数据源类型</th>
+                                <th>表名</th>
+                                <th>数据分发</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="source_table">
+                                <!-- <button type='button' class='btn btn-outline btn-primary id_serve' onclick='changeDCBMove(this)'>修改</button> -->
+                                <!-- <tr class="tdParent">
+                                    <td class="tdName tdRow">名称</td>
+                                    <td class="tdData tdRow">代码</td>
+                                    <td class="tdType tdRow">类型</td>
+                                    <td class="tdState tdRow">状态</td>
+                                    <td class="tdAddTime tdRow">创建时间</td>
+                                    <td class="tdChangeTime">DB</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick="addDCBMove(this)">新增</button>
+
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delDCBMove(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>ElasticSearch</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addES(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delES(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>HDFS</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addHDFS(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delHDFS(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>实时统计</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addInTime(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delInTime(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="tdParent">
+                                    <td class="tdName tdRow">名称</td>
+                                    <td class="tdData tdRow">代码</td>
+                                    <td class="tdType tdRow">类型</td>
+                                    <td class="tdState tdRow">状态</td>
+                                    <td class="tdAddTime tdRow">创建时间</td>
+                                    <td class="tdChangeTime">DB</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick="addDCBMove(this)">新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delDCBMove(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>ElasticSearch</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addES(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delES(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>HDFS</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addHDFS(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delHDFS(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>实时统计</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addInTime(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delInTime(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="tdParent">
+                                    <td class="tdName tdRow">名称</td>
+                                    <td class="tdData tdRow">代码</td>
+                                    <td class="tdType tdRow">类型</td>
+                                    <td class="tdState tdRow">状态</td>
+                                    <td class="tdAddTime tdRow">创建时间</td>
+                                    <td class="tdChangeTime">DB</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick="addDCBMove(this)">新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delDCBMove(this)'>修改</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>ElasticSearch</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addES(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delES(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>HDFS</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addHDFS(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delHDFS(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='display:none'>名称</td>
+                                    <td style='display:none'>代码</td>
+                                    <th style='display:none'>类型</th>
+                                    <td style='display:none'>状态</td>
+                                    <td style='display:none'>创建时间</td>
+                                    <td>实时统计</td>
+                                    <td>
+                                        <div class='bars pull-left'>
+                                            <div class='btn-group hidden-xs' role='group'>
+                                                <button type='button' class='btn btn-outline btn-primary' onclick='addInTime(this)'>新增</button>
+                                                <button type='button' class='btn btn-outline btn-primary id_serve' onclick='delInTime(this)'>删除</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                        <div class="table-responsive" id="test"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="add-in-time">
+    <div class="addInTime">
+        <div class="timeTop">新增实时统计</div>
+        <div class="timeMiddle">是否新增实时统计计算能力</div>
+        <div class="timeBottom">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-primary" style="width:18%;" id="certainBtn">确定</button>
+                <button type="button" class="btn btn-danger" style="width:18%;float:right;" id="closeBtn">取消</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+<script src="./js/jquery.min.js?v=2.1.4"></script>
+<script src="./js/bootstrap.min.js?v=3.3.6"></script>
+<script src="./js/laypage.js?v=1.0.0"></script>
+<script type="text/javascript" src="./js/contabs.min.js"></script>
+<script type="text/javascript" src="./js/jsFreeMarker.js"></script>
+<script type="text/javascript" src="./js/lib/layer/layer.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        renewAjax()
+    });
+    var renewAjax=function(){
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:'http://data.pamirs.top:8080/config/datasource/list',
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+                    for(var i=0;i<data.datalist.length;i++){
+                        var datas=data.datalist[i];
+                        var url=datas.sourceUrl.split(":");
+                        var tr=
+                                "<tr>" +
+                                    "<td rowspan='4'>"+datas.sourceName+"</td>" +
+                                    "<td rowspan='4'>"+url[0]+"</td>" +
+                                    "<td rowspan='4'>"+url[1]+"</td>" +
+                                    "<td rowspan='4'>"+datas.sourceType+"</td>" +
+                                    "<td rowspan='4'>trade</td>" +
+                                    "<td>DB</td>" +
+                                    "<td>" +
+                                        "<div class='bars pull-left'>" +
+                                            "<div class='btn-group hidden-xs' role='group'>" +
+                                                "<button type='button' class='btn btn-outline btn-primary' onclick='addDCBMove(this)' data-id="+datas.id+">新增</button>" +
+//                                                "<button type='button' class='btn btn-outline btn-primary id_serve' onclick='delInTime(this)' data-id="+datas.id+">删除</button>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</td>" +
+                                "</tr>"+
+                                "<tr>"+
+                                    "<td style='display:none'>"+datas.sourceName+"</td>"+
+                                    "<td style='display:none'>"+url[0]+"</td>"+
+                                    "<td style='display:none'>"+url[1]+"</td>"+
+                                    "<td style='display:none'>"+datas.sourceType+"</td>" +
+                                    "<td style='display:none'>trade</td>" +
+                                    "<td>ElasticSearch</td>" +
+                                    "<td>" +
+                                        "<div class='bars pull-left'>" +
+                                            "<div class='btn-group hidden-xs' role='group'>" +
+                                                "<button type='button' class='btn btn-outline btn-primary' onclick='addES(this)'>新增</button>" +
+//                                                "<button type='button' class='btn btn-outline btn-primary id_serve' onclick='delES(this)'>删除</button>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</td>" +
+                                "</tr>" +
+                                "<tr>" +
+                                    "<td style='display:none'>"+datas.sourceName+"</td>"+
+                                    "<td style='display:none'>"+url[0]+"</td>"+
+                                    "<td style='display:none'>"+url[1]+"</td>"+
+                                    "<td style='display:none'>"+datas.sourceType+"</td>" +
+                                    "<td style='display:none'>trade</td>" +
+                                    "<td>HDFS</td>"+
+                                    "<td>"+
+                                        "<div class='bars pull-left'>"+
+                                            "<div class='btn-group hidden-xs' role='group'>"+
+                                                "<button type='button' class='btn btn-outline btn-primary' onclick='addHDFS(this)'>新增</button>"+
+//                                                "<button type='button' class='btn btn-outline btn-primary id_serve' onclick='delHDFS(this)'>删除</button>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</td>"+
+                                "</tr>"+
+                                "<tr>"+
+                                    "<td style='display:none'>"+datas.sourceName+"</td>"+
+                                    "<td style='display:none'>"+url[0]+"</td>"+
+                                    "<td style='display:none'>"+url[1]+"</td>"+
+                                    "<td style='display:none'>"+datas.sourceType+"</td>" +
+                                    "<td style='display:none'>trade</td>" +
+                                    "<td>实时统计</td>"+
+                                    "<td>"+
+                                        "<div class='bars pull-left'>" +
+                                            "<div class='btn-group hidden-xs' role='group'>"+
+                                                "<button type='button' class='btn btn-outline btn-primary' onclick='addInTime(this)'>新增</button>"+
+//                                                "<button type='button' class='btn btn-outline btn-primary id_serve' onclick='delInTime(this)'>删除</button>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</td>"+
+                                "</tr>";
+                        $(tr).appendTo("#source_table");
+                    }
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }
+            },
+            error:function(data){
+                layer.msg("服务获取失败["+data.errorCode+"]", {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    };
+    //分页
+    ;(function(win){
+        laypage({
+            cont: $('#test'), //容器。值支持id名、原生dom对象，jquery对象,
+            pages: 20, //总页数
+            skip: true, //是否开启跳页
+            skin: '#18a689',
+            groups: 8 //连续显示分页数
+        });
+
+    }(window));
+
+    var closeData=function(){
+        layer.close(lererData);
+    };
+    //弹框新增数据源
+    $('#addData').bind('click',function(){
+        lererData=layer.open({
+            type: 2,
+            title: '新增数据源',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: './addData.html' //iframe的url
+        });
+    });
+    var closeAddDB=function(){
+        layer.close(addDB);
+    };
+    //弹框新增DB迁移
+    function addDCBMove(obj){
+        $(obj).parents(".gray-bg").attr("data-type","addDB");
+        var id=$(obj).attr('data-id');
+        addDB=layer.open({
+            type: 2,
+            title: '新增DB迁移任务',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: './DBMove.html' //iframe的url
+        });
+    }
+    /*var closeChangeDB=function(){
+        layer.close(changeDB);
+    };*/
+    //弹框修改DB迁移
+    /*function changeDCBMove(obj){
+        $(obj).parents(".gray-bg").attr("data-type","changeDB");
+        var id=$(obj).attr('data-id');
+        changeDB=layer.open({
+            type: 2,
+            title: '修改DB迁移任务',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: './DBMove.html' //iframe的url
+        });
+    }*/
+    //删除DB迁移
+    /*function delDCBMove(obj){
+        $(obj).parents("tr").remove();
+    }*/
+
+    var closeAddES=function(){
+        layer.close(addESData);
+    };
+    //弹框新增ES
+    function addES(obj){
+        $(obj).parents(".gray-bg").attr("data-type","addES");
+        var id=$(obj).attr('data-id');
+        addESData=layer.open({
+            type: 2,
+            title: '新增ES计算能力',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: './EScalculate.html' //iframe的url
+        });
+    }
+    /*var closeChangeES=function(){
+        layer.close(changeES);
+    };*/
+    //弹框修改ES
+    /*function changeES(obj){
+        $(obj).parents(".gray-bg").attr("data-type","changeES");
+        var id=$(obj).attr('data-id');
+        changeES=layer.open({
+            type: 2,
+            title: '修改ES计算能力',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: './EScalculate.html' //iframe的url
+        });
+    }*/
+
+    //删除ES迁移
+    /*function delES(obj){
+        $(obj).parents("tr").remove();
+    }*/
+    //弹框新增实时统计
+    function addInTime(obj){
+        $(obj).parents(".gray-bg").attr("data-type","addES");
+        var id=$(obj).attr('data-id');
+        addES=layer.open({
+            type: 2,
+            title: '新增实时统计',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['80%', '90%'],
+            content: './InTime.html' //iframe的url
+        });
+    }
+
+
+    //删除实时统计迁移
+    /*function delInTime(obj){
+        $(obj).parents("tr").remove();
+    }*/
+</script>
+</body>
+</html>

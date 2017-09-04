@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>数据云</title>
+    <meta name="keywords" content="数据云">
+    <meta name="description" content="数据云">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="./css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="./css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="./css/laypage.css?v=4.1.0" rel="stylesheet">
+    <link href="./css/custom.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight" style="height: auto;overflow:hidden">
+    <div class="ibox-content" style="display: block;height: auto;overflow:hidden">
+        <div class="col-sm-12 isShow" style=“height:100%”>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="border: none;">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">ES API：</label>
+                            <div class="col-sm-10">
+                                <textarea name="textarea" id="ESAPI" class="form-control" cols="30" rows="15" disabled="true" style="background:#fff;border-radius:5px;resize:none;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 isHidden" style=“height:100%”>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="border: none;">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">MySQL结构：</label>
+                            <div class="col-sm-10">
+                                <textarea name="textarea" class="form-control" cols="30" rows="8" disabled="true" style="background:#fff;border-radius:5px;resize:none;">123</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">SQL语言：</label>
+                            <div class="col-sm-10">
+                                <textarea name="textarea" class="form-control" cols="30" rows="8" disabled="true" style="background:#fff;border-radius:5px;resize:none;">123</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">
+            <button type="button" class="btn btn-danger" style="width:100px;float:right;" id="close">取消</button>
+        </div>
+    </div>
+    </div>
+</div>
+<script src="./js/jquery.min.js?v=2.1.4"></script>
+<script src="./js/bootstrap.min.js?v=3.3.6"></script>
+<script src="./js/laypage.js?v=1.0.0"></script>
+<script src="./js/icheck.min.js?v=1.0.0"></script>
+<script type="text/javascript" src="./js/contabs.min.js"></script>
+<script type="text/javascript" src="./js/lib/layer/layer.js"></script>
+<script type="text/javascript">
+    //关闭弹窗
+    $('#close').bind('click',function(){
+        window.parent.closeContrast();
+        $('.gray-bg', parent.document).removeAttr("datas-id");
+    });
+    //判断显示那个内容
+    var datasID=$('.gray-bg', parent.document).attr("datas-id");
+    if(datasID=="contrast11"||datasID=="contrast22"||datasID=="contrast33"){
+        $(".isHidden").css({display:"block"});
+        $(".isShow").css({display:"none"});
+    }else{
+        $(".isHidden").css({display:"none"});
+        $(".isShow").css({display:"block"});
+    }
+    //判断打开的是哪个弹框
+    if(datasID=='contrast1'){
+        esShow1('');
+    }else if(datasID=='contrast2'){
+        //业务查询--es
+        $("#ESAPI").text($('#ESProcess', parent.document).text());
+    }else if(datasID=='contrast3'){
+        esShow3('');
+    }else if(datasID=='contrast11'){
+        SQLShow1('');
+    }else if(datasID=='contrast22'){
+        SQLShow2('');
+    }else if(datasID=='contrast33'){
+        SQLShow3('');
+    }
+    //实时统计--es
+    function esShow1(url){
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:url,
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }else{
+
+                }
+            },
+            error:function(data){
+                layer.msg(''+data.errorMessage+":"+data.errorCode+"\n"+data.errorName, {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    }
+    //业务操作--es
+    function esShow3(url){
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:url,
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }else{
+
+                }
+            },
+            error:function(data){
+                layer.msg(''+data.errorMessage+":"+data.errorCode+"\n"+data.errorName, {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    }
+    //实时统计--mysql
+    function SQLShow1(url){
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:url,
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }else{
+
+                }
+            },
+            error:function(data){
+                layer.msg(''+data.errorMessage+":"+data.errorCode+"\n"+data.errorName, {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    }
+    //业务查询--mysql
+    function SQLShow2(url){
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:url,
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }else{
+
+                }
+            },
+            error:function(data){
+                layer.msg(''+data.errorMessage+":"+data.errorCode+"\n"+data.errorName, {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    }
+    //业务操作--mysql
+    function SQLShow3(url){
+        var index = layer.load(2, {shade: false});
+        $.ajax({
+            type:'POST',
+            url:url,
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+
+                    function layerLoad(){layer.close(index);}
+                    setTimeout(layerLoad,1000);
+                }else{
+
+                }
+            },
+            error:function(data){
+                layer.msg(''+data.errorMessage+":"+data.errorCode+"\n"+data.errorName, {
+                    offset: 't',
+                    anim: 0
+                });
+                function layerLoad(){layer.close(index);}
+                setTimeout(layerLoad,1000);
+            }
+        });
+    }
+</script>
+</body>
+</html>
